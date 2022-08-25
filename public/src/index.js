@@ -48,7 +48,7 @@ function drawImg() {
   console.log(imgIndex);
   ctx.drawImage(imgList[imgIndex], 0, 0, canvas.width, canvas.height);
 }
-const socket = io.connect(b, {
+const socket = io.connect(a, {
   path: "/socket.io",
 });
 
