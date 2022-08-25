@@ -1,4 +1,4 @@
-const a = "https://damp-earth-02842.herokuapp.com";
+const a = "https://popcat-dae.herokuapp.com";
 const b = "http://localhost:8005";
 
 const canvas = document.querySelector("#main-canvas");
