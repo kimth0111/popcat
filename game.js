@@ -1,8 +1,18 @@
 const redis = require("redis");
 const { app } = require("./app");
 const jsonify = require("redis-jsonify");
+var admin = require("firebase-admin");
+var firestore = require("firebase-admin/firestore");
 
-const client = redis.createClient({ host: "127.0.0.1", port: 6379 });
+var serviceAccount = require("./config.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
+
+const db = firestore.getFirestore();
+
+// const client = redis.createClient({ host: "127.0.0.1", port: 6379 });
 
 let serverData = {};
 
@@ -15,18 +25,29 @@ const clickData = {
   },
 };
 
-client.connect();
-client.on("connect", function () {
-  console.log("connected!!");
+// client.connect();
+// client.on("connect", function () {
+//   console.log("connected!!");
 
-  client.get("test").then((data) => {
-    serverData = JSON.parse(data);
+//   client.get("test").then((data) => {
+//     serverData = JSON.parse(data);
+//     if (!serverData)
+//       serverData = { time: clickData.time, grade: { ...clickData.grade } };
+
+//     setInterval(saveDataToServer, 1000);
+//   });
+// });
+db.collection("data")
+  .doc("data")
+  .get()
+  .then((data) => {
+    serverData = data.data();
+    console.log(data.data());
     if (!serverData)
       serverData = { time: clickData.time, grade: { ...clickData.grade } };
-
+    console.log(serverData);
     setInterval(saveDataToServer, 1000);
   });
-});
 
 function saveDataTemp(data) {
   if (clickData.grade[data.user.grade]) {
@@ -37,8 +58,9 @@ function saveDataTemp(data) {
     }
   }
 }
-
+let frame = 0;
 function saveDataToServer() {
+  frame++;
   const change = { ...clickData.grade };
 
   for (let i = 0; i < 3; i++) {
@@ -51,7 +73,8 @@ function saveDataToServer() {
 
   for (let i = 0; i < 3; i++) {
     clickData.grade[i + 1 + ""] = [0, 0, 0, 0, 0, 0, 0, 0];
-    client.set("test", JSON.stringify(serverData));
+    // client.set("test", JSON.stringify(serverData));
+    if (frame % 10 == 0) db.collection("data").doc("data").set(serverData);
   }
 }
 
