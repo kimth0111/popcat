@@ -72,8 +72,9 @@ let frame = 0;
 function saveDataToServer() {
   for (let i in userClick) {
     console.log(userClick[i].click);
-    if (userClick[i].click >= 100) {
-      clickData.grade[2][userClick[i].class - 1] = 0;
+    if (userClick[i].click >= 60) {
+      clickData.grade[2][userClick[i].class - 1] = 30;
+      console.log("too many!!!!!!!!!!", userClick[i].class);
     }
   }
   userClick = {};
