@@ -1,5 +1,6 @@
 const a = "https://popcat-dae.herokuapp.com";
 const b = "http://localhost:8005";
+const c = location.href;
 
 const canvas = document.querySelector("#main-canvas");
 const ctx = canvas.getContext("2d");
@@ -48,7 +49,7 @@ function drawImg() {
   console.log(imgIndex);
   ctx.drawImage(imgList[imgIndex], 0, 0, canvas.width, canvas.height);
 }
-const socket = io.connect(a, {
+const socket = io.connect(c, {
   path: "/socket.io",
 });
 
@@ -188,7 +189,7 @@ function draw() {
       setTimeout(() => {
         el.querySelectorAll("td")[2].textContent =
           Number(el.querySelectorAll("td")[2].textContent) +
-          Math.ceil(
+          Math.floor(
             ((data[index].data -
               Number(el.querySelectorAll("td")[2].textContent)) /
               20.0) *
