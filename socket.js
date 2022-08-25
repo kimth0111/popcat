@@ -26,7 +26,7 @@ module.exports = (server, app, sessionMiddleware) => {
       ) {
         return;
       }
-      saveDataTemp(data);
+      saveDataTemp(data, socket.id);
     });
     socket.emit("send", getData());
     const interval = setInterval(() => {

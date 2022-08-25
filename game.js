@@ -15,6 +15,7 @@ const db = firestore.getFirestore();
 // const client = redis.createClient({ host: "127.0.0.1", port: 6379 });
 
 let serverData = {};
+let userClick = {};
 
 const clickData = {
   time: 0,
@@ -49,7 +50,16 @@ db.collection("data")
     setInterval(saveDataToServer, 1000);
   });
 
-function saveDataTemp(data) {
+function saveDataTemp(data, id) {
+  if (!userClick[id]) {
+    userClick[id] = {
+      click: 1,
+      class: data.user.class,
+    };
+  } else {
+    userClick[id].click = userClick[id].click + 1;
+  }
+
   if (clickData.grade[data.user.grade]) {
     if (clickData.grade[data.user.grade][data.user.class - 1] != undefined) {
       console.log("click@");
@@ -60,6 +70,13 @@ function saveDataTemp(data) {
 }
 let frame = 0;
 function saveDataToServer() {
+  for (let i in userClick) {
+    console.log(userClick[i].click);
+    if (userClick[i].click >= 66) {
+      clickData.grade[2][userClick[i].class - 1] = 0;
+    }
+  }
+  userClick = {};
   frame++;
   const change = { ...clickData.grade };
 
