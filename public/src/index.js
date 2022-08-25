@@ -11,7 +11,7 @@ imgList[1].src = "/popcat2.jpg";
 let imgIndex = 0;
 let isClick = false;
 let isDrawing = false;
-let count = 0;
+let count = Number(localStorage.getItem("count"))|0;
 let cntData = {};
 let order;
 let preOrder;
@@ -156,6 +156,7 @@ function getOrder(cl, arr) {
 }
 
 function draw() {
+  localStorage.setItem("count",count);
   const data = [...order];
   const trList = document.querySelectorAll("tr");
   trList.forEach((el, index) => {
