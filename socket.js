@@ -1,7 +1,7 @@
 const { default: axios } = require("axios");
 const { session } = require("passport");
 const SocketIO = require("socket.io");
-const { saveDataTemp, getData } = require("./game");
+const { saveDataTemp, getData, chat, getChat } = require("./game");
 
 module.exports = (server, app, sessionMiddleware) => {
   const io = SocketIO(server, { path: "/socket.io" });
@@ -12,7 +12,7 @@ module.exports = (server, app, sessionMiddleware) => {
     console.log("game 접속!!", socket.id, socket.ip);
 
     socket.on("click", (data) => {
-      console.log(data);
+      // console.log(data);
       if (data.user.grade === 0 || data.user.grade === 0) {
         return;
       }
@@ -28,11 +28,21 @@ module.exports = (server, app, sessionMiddleware) => {
       }
       saveDataTemp(data, socket.id);
     });
+    socket.on("chat", (data) => {
+      chat(data);
+      console.log("ghgjhg");
+      io.emit("chat", data);
+    });
     socket.emit("send", getData());
     const interval = setInterval(() => {
       const data = getData();
       socket.emit("send", data);
     }, 2000);
+    socket.on("start", () => {
+      const data = getChat();
+      console.log(data);
+      socket.emit("start", data);
+    });
     socket.on("disconnect", () => {
       console.log("클라이언트 접속해제", socket.id);
       clearInterval(interval);

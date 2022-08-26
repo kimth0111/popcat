@@ -11,11 +11,12 @@ imgList[1].src = "/popcat2.jpg";
 let imgIndex = 0;
 let isClick = false;
 let isDrawing = false;
-let count = Number(localStorage.getItem("count"))|0;
+let count = Number(localStorage.getItem("count")) | 0;
 let cntData = {};
 let order;
 let preOrder;
 let isStart = true;
+let chatList = [];
 
 const user = {
   grade: Number(localStorage.getItem("grade")) | 0,
@@ -46,7 +47,6 @@ imgList[0].onload = () => {
 };
 
 function drawImg() {
-  console.log(imgIndex);
   ctx.drawImage(imgList[imgIndex], 0, 0, canvas.width, canvas.height);
 }
 const socket = io.connect(c, {
@@ -54,12 +54,21 @@ const socket = io.connect(c, {
 });
 
 socket.on("send", (data) => {
-  console.log("데이터를 받음");
-  console.table(data.grade[2]);
   cntData = { ...data };
   setOrder();
   draw();
   isStart = false;
+});
+socket.on("start", (data) => {
+  console.log("start", data);
+  chatList = data;
+  drawChat();
+});
+socket.emit("start");
+socket.on("chat", (data) => {
+  console.log("hihi");
+  chatList.unshift(data);
+  drawChat();
 });
 
 canvas.addEventListener("click", () => {
@@ -144,7 +153,6 @@ function setOrder() {
     preOrder = [...temp];
     order = [...temp];
   }
-  console.log(temp);
 }
 
 function getOrder(cl, arr) {
@@ -156,17 +164,12 @@ function getOrder(cl, arr) {
 }
 
 function draw() {
-  localStorage.setItem("count",count);
+  localStorage.setItem("count", count);
   const data = [...order];
   const trList = document.querySelectorAll("tr");
   trList.forEach((el, index) => {
     if (data[index].class == user.class) el.classList.add("my");
     else el.classList.remove("my");
-    console.log(
-      data[index].class,
-      getOrder(data[index].class, order),
-      getOrder(data[index].class, preOrder)
-    );
     if (
       getOrder(data[index].class, order) > getOrder(data[index].class, preOrder)
     ) {
@@ -199,4 +202,37 @@ function draw() {
       }, i * 80);
     }
   });
+}
+
+document.querySelector("form").addEventListener("submit", (el) => {
+  el.preventDefault();
+  console.log(el.target.content.value);
+  const content = el.target.content.value;
+  el.target.content.value = "";
+  if (!content) return;
+  console.log(content + "를 보냅니다");
+  socket.emit("chat", { user, content });
+  drawChat();
+});
+
+function drawChat() {
+  const chatCon = document.querySelector("ul");
+  chatCon.innerHTML = "";
+  for (let i = 0; i < 5; i++) {
+    console.log(chatList[i]);
+    if (chatList.length - 1 < i) return;
+    const li = document.createElement("li");
+    const name = document.createElement("div");
+    name.classList = "chat-name";
+    const content = document.createElement("div");
+    content.classList = "chat-content";
+    const div = document.createElement("div");
+    name.innerHTML = chatList[i].user.class + "반";
+    content.innerHTML = chatList[i].content;
+    div.style.display = "flex";
+    div.append(name);
+    div.append(content);
+    li.append(div);
+    chatCon.append(li);
+  }
 }

@@ -1,5 +1,6 @@
 const express = require("express");
 const { render } = require("nunjucks");
+const { getChat } = require("../game");
 
 const router = express.Router();
 router.get("/set", (req, res) => {
