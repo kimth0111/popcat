@@ -43,10 +43,8 @@ db.collection("data")
   .get()
   .then((data) => {
     serverData = data.data();
-    console.log(data.data());
     if (!serverData)
       serverData = { time: clickData.time, grade: { ...clickData.grade } };
-    console.log(serverData);
     setInterval(saveDataToServer, 1000);
   });
 
@@ -62,7 +60,6 @@ function saveDataTemp(data, id) {
 
   if (clickData.grade[data.user.grade]) {
     if (clickData.grade[data.user.grade][data.user.class - 1] != undefined) {
-      console.log("click@");
       clickData.grade[data.user.grade][data.user.class - 1] =
         clickData.grade[data.user.grade][data.user.class - 1] + 1;
     }
@@ -71,7 +68,6 @@ function saveDataTemp(data, id) {
 let frame = 0;
 function saveDataToServer() {
   for (let i in userClick) {
-    console.log(userClick[i].click);
     if (userClick[i].click >= 60) {
       clickData.grade[2][userClick[i].class - 1] = 30;
       console.log("too many!!!!!!!!!!", userClick[i].class);
@@ -83,7 +79,6 @@ function saveDataToServer() {
 
   for (let i = 0; i < 3; i++) {
     for (let j = 0; j < 8; j++) {
-      // console.log(serverData.grade[i + 1 + ""][j], change[i + 1 + ""][j]);
       serverData.grade[i + 1 + ""][j] =
         serverData.grade[i + 1 + ""][j] + change[i + 1 + ""][j];
     }
@@ -92,7 +87,7 @@ function saveDataToServer() {
   for (let i = 0; i < 3; i++) {
     clickData.grade[i + 1 + ""] = [0, 0, 0, 0, 0, 0, 0, 0];
     // client.set("test", JSON.stringify(serverData));
-    if (frame % 10 == 0) db.collection("data").doc("data").set(serverData);
+    if (frame % 20 == 0) db.collection("data").doc("data").set(serverData);
   }
 }
 
