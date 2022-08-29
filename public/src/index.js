@@ -185,8 +185,8 @@ function draw() {
       // el.classList.remove("down");
     }
 
-    el.querySelector(".class").innerHTML = data[index].class + "반";
-    el.querySelector(".change").innerHTML =
+    el.querySelector(".class").textContent = data[index].class + "반";
+    el.querySelector(".change").textContent =
       "+" +
       (data[index].data - Number(el.querySelectorAll("td")[2].textContent));
     for (let i = 0; i < 30; i++) {
@@ -217,7 +217,7 @@ document.querySelector("form").addEventListener("submit", (el) => {
 
 function drawChat() {
   const chatCon = document.querySelector("ul");
-  chatCon.innerHTML = "";
+  chatCon.textContent = "";
   for (let i = 0; i < 5; i++) {
     console.log(chatList[i]);
     if (chatList.length - 1 < i) return;
@@ -227,8 +227,8 @@ function drawChat() {
     const content = document.createElement("div");
     content.classList = "chat-content";
     const div = document.createElement("div");
-    name.innerHTML = chatList[i].user.class + "반";
-    content.innerHTML = chatList[i].content;
+    name.textContent = chatList[i].user.class + "반";
+    content.textContent = chatList[i].content;
     div.style.display = "flex";
     div.append(name);
     div.append(content);
