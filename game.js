@@ -96,7 +96,7 @@ function saveDataToServer() {
   for (let i = 0; i < 3; i++) {
     clickData.grade[i + 1 + ""] = [0, 0, 0, 0, 0, 0, 0, 0];
     // client.set("test", JSON.stringify(serverData));
-    if (frame % 20 == 0) db.collection("data").doc("data").set(serverData);
+    if (frame % 40 == 0) db.collection("data").doc("data").set(serverData);
   }
 }
 
@@ -119,4 +119,4 @@ function getChat() {
   console.log(chatList);
   return chatList;
 }
-module.exports = { saveDataTemp, getData, getChat, chat };
+module.exports = { saveDataTemp, getData, getChat, chat, db };
