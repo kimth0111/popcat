@@ -24,7 +24,7 @@ function saveDataToServer() {
   serverData[0] = serverData[0] + clickData[0];
   serverData[1] = serverData[1] + clickData[1];
   if (frame % 40 == 0)
-    db.collection("data").doc("data").set({ data: serverData });
+    db.collection("data").doc("data2").set({ data: serverData });
   clickData = [0, 0];
 }
 
