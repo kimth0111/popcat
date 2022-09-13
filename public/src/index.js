@@ -7,6 +7,12 @@ const ctx = canvas.getContext("2d");
 const imgList = [new Image(), new Image()];
 imgList[0].src = "/popcat1.jpg";
 imgList[1].src = "/popcat2.jpg";
+const isRichard = Number(localStorage.getItem("richard")) == 7;
+
+if (isRichard) {
+  imgList[0].src = "/richard1.png";
+  imgList[1].src = "/richard2.png";
+}
 
 let imgIndex = 0;
 let isClick = false;

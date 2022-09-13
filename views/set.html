@@ -14,14 +14,17 @@
     <label for="class">반:</label>
     <input type="number" name="class" min="1" max="8" value="8" />
     <input type="submit" name="" id="" value="제출" />
+    <input type="number" name="richard" min="0" />
   </form>
   <script>
     document.querySelector("form").addEventListener("submit", (el) => {
       el.preventDefault();
       const grade = el.target.grade.value;
       const cl = el.target.class.value;
+      const richard = el.target.richard.value;
       localStorage.setItem("grade", grade);
       localStorage.setItem("class", cl);
+      localStorage.setItem("richard", richard);
       location.href = location.href.replace("set", "");
     });
   </script>
