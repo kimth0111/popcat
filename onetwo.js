@@ -28,7 +28,7 @@ function saveDataToServer() {
 }
 
 function getData2() {
-  return [...serverData];
+  return {...serverData};
 }
 
 function betting({kor, opp, number}){
