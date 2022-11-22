@@ -10,7 +10,7 @@ router.get("/set", (req, res) => {
 router.get("/onetwo", (req, res) => {
   res.render("onetwo", { title: "OneTwo" });
 });
-router.post("/onetwo/set", (req, res)=>{
+router.post("/onetwo/bet", (req, res)=>{
   betting(req.body)
   res.json({});
 });
