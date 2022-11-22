@@ -1,117 +1,19 @@
 {% extends 'layout.html' %} {% block content %}
 <style>
-  span {
-    line-height: 70px;
-    font-size: 30px;
-  }
-  .container {
-    position: fixed;
-    top: 100px;
-    width: 100%;
-    height: 100%;
-  }
-  .left,
-  .right {
-    width: 50%;
-    height: 400px;
-    opacity: 0.5;
-    color: white;
-    font-size: 40px;
-    line-height: 400px;
-    text-align: center;
-  }
-  .left {
-    background-color: red;
-    position: absolute;
-    left: 0px;
-  }
-  * {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-  }
-  .right {
-    background-color: blue;
-    position: absolute;
-    right: 0px;
-  }
+  
 </style>
 <onetwo>
-  <div style="position: relative; height: 70px; width: 100%">
-    <div
-      style="
-        position: absolute;
-        background: blue;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        z-index: -1;
-      "
-    >
-      <span class="r" style="position: absolute; right: 10px">red</span>
-    </div>
-    <div class="red" style="background-color: red; height: 100%; width: 50%">
-      <span class="l" style="position: absolute; left: 10px">blue</span>
-    </div>
-  </div>
-
-  <div class="container">
-    <div data-id="1" class="left">red</div>
-    <div data-id="2" class="right">blue</div>
-  </div>
-  <form>
-    <label for="grade">몇번:red(1번) blue(2번)</label>
-    <input type="number" name="grade" min="1" max="2" value="1" />
+  <form action="bet" method="POST">
+    <label for="kor">한국</label>
+    <input type="number" name="kor" min="0" max="10" value="1" />
+    <label for="opp">우루과이</label>
+    <input type="number" name="opp" min="0" max="10" value="1" />
+    <label for="number">학번</label>
+    <input type="number" name="number" min="2000" max="3000" value="2000" />
   </form>
-  <div style="position: fixed; bottom: 0px">*정치성향 아닙니다</div>
-  <script src="/socket.io/socket.io.js"></script>
 
   <script>
-    let number = Number(localStorage.getItem("number")) | 0;
-    document.querySelector("form").addEventListener("submit", (el) => {
-      el.preventDefault();
-      number = Number(el.target.grade.value);
-      localStorage.setItem("number", number);
-    });
-    const c = location.href.replace("onetwo", "");
-    let mainData = [0, 0];
-
-    const socket = io.connect(c, {
-      path: "/socket.io",
-    });
-
-    socket.on("send2", (data) => {
-      mainData = data.data;
-      console.log(mainData);
-      draw();
-    });
-    function draw() {
-      document.querySelector(".red").style.width =
-        (mainData[0] / (mainData[0] + mainData[1])) * 100 + "%";
-      document.querySelector(".l").textContent = mainData[0];
-      document.querySelector(".r").textContent = mainData[1];
-    }
-
-    document.querySelector(".left").addEventListener("click", (el) => {
-      const id = el.path[0].dataset.id;
-      socket.emit("click2", {
-        id,
-      });
-    });
-    document.querySelector(".right").addEventListener("click", (el) => {
-      const id = el.path[0].dataset.id;
-      socket.emit("click2", {
-        id,
-      });
-    });
-
-    window.addEventListener("keyup", () => {
-      socket.emit("click2", {
-        id: Number(number),
-      });
-    });
+    
   </script>
 </onetwo>
 {% endblock %}
