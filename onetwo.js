@@ -11,7 +11,6 @@ db.collection("data")
     serverData = data.data();
     if (!serverData) serverData = {};
     else serverData = serverData.data;
-    setInterval(saveDataToServer, 1000);
   });
 
 function saveDataTemp2(data) {
