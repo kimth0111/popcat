@@ -1,6 +1,6 @@
 const { db } = require("./game");
 
-let serverData = [0, 0];
+let serverData = {};
 let userClick = {};
 
 let clickData = [0, 0];
@@ -9,7 +9,7 @@ db.collection("data")
   .get()
   .then((data) => {
     serverData = data.data();
-    if (!serverData) serverData = [0, 0];
+    if (!serverData) serverData = {};
     else serverData = serverData.data;
     setInterval(saveDataToServer, 1000);
   });
@@ -32,4 +32,8 @@ function getData2() {
   return [...serverData];
 }
 
-module.exports = { saveDataTemp2, getData2 };
+async function betting({kor, opp, number}){
+  serverData[number] = {kor, opp};
+  await db.collection("data").doc("data2").set({ data:serverData })
+}
+module.exports = { saveDataTemp2,betting, getData2 };
