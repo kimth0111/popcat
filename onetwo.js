@@ -32,8 +32,9 @@ function getData2() {
   return [...serverData];
 }
 
-async function betting({kor, opp, number}){
+function betting({kor, opp, number}){
   serverData[number] = {kor, opp};
-  await db.collection("data").doc("data2").set({ data:serverData })
+  console.log(number, kor, opp);
+  db.collection("data").doc("data2").set({ data:serverData })
 }
 module.exports = { saveDataTemp2,betting, getData2 };
