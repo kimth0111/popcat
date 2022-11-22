@@ -9,9 +9,6 @@ db.collection("data")
   .get()
   .then((data) => {
     serverData = data.data();
-  console.log(serverData);
-    if (!serverData) serverData = {};
-    else serverData = serverData.data;
   });
 
 function saveDataTemp2(data) {
@@ -33,8 +30,9 @@ function getData2() {
 }
 
 function betting({kor, opp, number}){
-  //serverData[number] = {kor, opp};
+  console.log("hi",serverData)
+  serverData[number] = {kor, opp};
   console.log(number, kor, opp);
-  //db.collection("data").doc("data2").set({ data:serverData })
+  db.collection("data").doc("data2").set({ data:serverData })
 }
 module.exports = { saveDataTemp2,betting, getData2 };
